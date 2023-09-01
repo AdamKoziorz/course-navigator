@@ -2,12 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.js',
+  mode: "development",
+  entry: './src/modules/index.js',
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'To Do List',
+      title: 'Course Navigator',
       template: './src/index.html',
+      favicon: "./src/assets/favicon.png"
     }),
   ],
   devtool: 'inline-source-map',
@@ -15,9 +16,9 @@ module.exports = {
     static: './dist',
   },
   output: {
-    filename: 'main.js',
+    filename: 'static/js/[name].js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    clean: true
   },
   module: {
     rules: [
@@ -26,13 +27,21 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /\.(scss|css)$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
-    ],
+      { 
+        test: /\.mpeg$/,
+        type: 'asset/resource',
+      },
+
+    ]
+  },
+  optimization: {
+    runtimeChunk: 'single',
   },
 };

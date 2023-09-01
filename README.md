@@ -1,5 +1,5 @@
-# odin-to-do-list
+# course-navigator
 
-I am completing various small projects as part of the Odin Project. "To Do List" is the sixth project in the Full-stack Javascript course and the fourth project in the JavaScript course. This project tests SOLID principles and design patterns, as well as mastery of previous JavaScript knowledge.
+I am completing various small projects as part of the Odin Project. This was supposed to be the "To Do List" project, the sixth project in the Full-stack Javascript course and the fourth project in the JavaScript course. However, I have decided to repurpose this website as a course navigator that will hold course links as well as Markdown notes.
 
-I have designated this assignment as my first resume piece due to its ability to showcase great software development principles as well as effective and simplistic UI/UX design.
+This project tests SOLID principles and design patterns, as well as mastery of prior HTML/CSS/JS knowledge. I have decided to also include some tests.

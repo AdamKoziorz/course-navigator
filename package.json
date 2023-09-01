@@ -1,7 +1,7 @@
 {
-  "name": "odin-to-do-list",
+  "name": "course-navigator",
   "version": "1.0.0",
-  "description": "",
+  "description": "A course navigator to store course links and notes",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,24 +11,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AdamKoziorz/odin-to-do-list.git"
+    "url": "git+https://github.com/AdamKoziorz/course-navigator.git"
   },
-  "author": "Adam Koziorz",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AdamKoziorz/odin-to-do-list/issues"
+    "url": "https://github.com/AdamKoziorz/course-navigator/issues"
   },
-  "homepage": "https://github.com/AdamKoziorz/odin-to-do-list#readme",
+  "homepage": "https://github.com/AdamKoziorz/course-navigator#readme",
   "devDependencies": {
     "css-loader": "^6.8.1",
-    "eslint": "^8.45.0",
+    "eslint": "^8.48.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.1",
+    "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
-    "webpack": "^5.88.1",
+    "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   }
