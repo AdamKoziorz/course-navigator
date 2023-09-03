@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Do List</title>
+    <meta name="description" content="A place to store all of your class information in one">
+    <title>Course Navigator</title>
 </head>
 <body>
+    <div class="content-wrapper">
+        <h1>Course Navigator</h1>
+        <main class="courses">
+
+        </main>
+        <section class="add-course-button">
+            <button>+</button>
+            <span>Add Course</span>
+        </section>
+        <section class="add-course-modal hidden">
+            <form class="modal-form" id="modal-form">
+                <h3>Add Course</h3>
+                <input type="text" id="course" placeholder="Course Name" maxlength="100" required>
+                
+                <div class="is-read">
+                    <label for="is-read">Did you read it?</label>
+                    <input class="checkbox" type="checkbox" id="isRead">
+                </div>
+                <button id="submit" type="submit">Submit</button>
+                </form>
+        </section>
+    </div>
 </body>
 </html>
