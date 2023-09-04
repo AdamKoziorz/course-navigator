@@ -1,5 +1,6 @@
 :root {
     --main-bg-color: rgb(232, 232, 232);
+    --add-btn-color: rgb(160, 160, 160);
 }
 
 body {
@@ -11,10 +12,11 @@ body {
 }
 
 .content-wrapper {
-    max-width: 800px;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    align-items: center;
+    gap: 80px;
 }
 
 h1 {
@@ -33,10 +35,14 @@ h1 {
   height: 5rem;
   width: 5rem;
   border-radius: 50%;
-  border: 2px solid black;
+  border: 2px solid var(--add-btn-color);
   font-size: 3rem;
+  text-align: center;
+  transition: transform ease-in-out 0.2s;
 }
 
-.add-course-button span {
-    font-size: 1.5rem;
+.add-course-button button:hover {
+    border: 2px solid var(--add-btn-color);
+    font-size: 3rem;
+    transform: scale(1.1) perspective(0.5px);
 }

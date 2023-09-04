@@ -1,0 +1,61 @@
+.course-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+}
+
+.course {
+    padding: 30px;
+    border-radius: 30px;
+    background-color: rgb(62, 62, 62);
+    max-width: 1200px;
+    min-width: 800px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 10px;
+}
+
+.course .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.course .header button {
+    display: block;
+    height: 2.3rem;
+    width: 2.3rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.course .header button img {
+    position: absolute;
+}
+
+.course input {
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: calc(100% - 80px);
+}
+
+.course input::placeholder {
+    color: rgb(201, 201, 201);
+}
+
+.course input:focus {
+    border-bottom: 1px solid white;
+}
+
+.course-input-name {
+    font-size: 2rem;
+}
+
+.course-input-prof {
+    font-size: 1.3rem;
+}
