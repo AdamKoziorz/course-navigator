@@ -1,21 +1,22 @@
-function Link(name, url) {
-    this.name = name;
-    this.url = url;
-}
+// "Link" is a factory function that represents a link (name, url)
+const Link = (name, url) => ({name, url})
 
-function Links() {
-    let links = [];
+// Courses is a module that provides operations on an array of "Link"
+const links = (() => {
+    let linksArray = [];
 
-    this.addLink = (name, url) => {
-        const newLink = new Link(name, url);
-        links.push(newLink);
+    const addLink = (name, url) => {
+        const newLink = Link(name, url);
+        linksArray.push(newLink);
     }
 
-    this.removeLink = (name) => {
-        links = links.filter((link) => (link.name !== name));
+    const removeLink = (name) => {
+        linksArray = linksArray.filter((link) => (link.name !== name));
     }
 
-    this.isUniqueLink = (name) => links.find((link => (link.name === name))) === undefined;
-}
+    const isUnique = (name) => linksArray.find((link => (link.name === name))) === undefined;
 
-export default Links;
+    return {addLink, removeLink, isUnique};
+})();
+
+export default links;

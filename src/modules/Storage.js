@@ -1,10 +1,17 @@
-function saveData(data) {
-    window.localStorage.setItem("courses", JSON.stringify(data));
-}
+const storage = (() => {
 
-function getData() {
-    const courses = localStorage.getItem("courses");
-    return JSON.parse(JSON.parse(courses));
-}
+    const saveData = (data) => {
+        console.log(JSON.stringify(data));
+        window.localStorage.setItem("courses", JSON.stringify(data));
+    }
+    
+    const getData = () => {
+        const courses = localStorage.getItem("courses");
+        console.log(JSON.parse(courses));
+        return JSON.parse(courses);
+    }
 
-export { saveData, getData };
+    return {saveData, getData}
+})();
+
+export default storage;

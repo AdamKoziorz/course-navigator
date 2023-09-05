@@ -1,30 +1,30 @@
-function ToDo(objective, complete) {
-    this.objective = objective;
-    this.complete = complete;
+// "ToDo" is a factory function that represents a todo (objective, completion)
+const ToDo = (objective, completeStatus) => {
+    let complete = completeStatus;
 
-    this.changeStatus = (isComplete) => {
-        this.complete = isComplete;
+    const changeStatus = (isComplete) => {
+        complete = isComplete;
     }
+
+    return {objective, complete, changeStatus}
 }
 
-function ToDoList() {
-    let toDos = [];
+// toDoList is a module that provides operations on an array of "ToDo"
+const toDoList = (() => {
+    let toDoArray = [];
 
-    this.addToDo = (objective) => {
-        const newToDo = new ToDo(objective, false);
-        toDos.push(newToDo);
+    const addToDo = (objective, completeStatus) => {
+        const newToDo = ToDo(objective, completeStatus);
+        toDoArray.push(newToDo);
     }
 
-    this.removeToDo = (objective) => {
-        toDos = toDos.filter((todo) => (todo.objective !== objective));
+    const removeToDo = (objective) => {
+        toDoArray = toDoArray.filter((todo) => (todo.objective !== objective));
     }
 
-    this.changeToDoStatus = (objective, status) => {
-        const result = toDos.find((todo) => (todo.objective === objective));
-        result.changeStatus(status);
-    }
+    const isUnique = (objective) => toDoArray.find((todo => (todo.objective === objective))) === undefined;
 
-    this.isUniqueObjective = (objective) => toDos.find((todo) => (todo.objective === objective)) === undefined
-}
+    return {addToDo, removeToDo, isUnique};
+})();
 
-export default ToDoList;
+export default toDoList;

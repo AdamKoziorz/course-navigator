@@ -1,43 +1,58 @@
-import ToDoList from './Todos';
-import Links from './Links';
-import { saveData } from './Storage'
+import toDoList from './Todos';
+import links from './Links';
 
-function Course(name, prof = null, links = new Links(), todos = new ToDoList()) {
-    this.name = name;
-    this.prof = prof;
-    this.links = links;
-    this.todos = todos;
+// "Course" is a factory function that represents a course (name, prof, links, todos)
+const Course = (name) => {
+    const courseName = name;
+    const courseProf = null;
+    const courseLinks = links;
+    const courseToDos = toDoList;
 
-    this.getName = () => this.name
-    this.getProf = () => this.prof
-    this.getLinks = () => this.links
-    this.getToDos = () => this.todos
-
-    this.setName = (newName) => {
-        this.name = newName;
-    }
-
-    this.setProf = (newProf) => {
-        this.prof = newProf;
+    return {
+        courseName, courseProf, courseLinks, courseToDos
     }
 }
 
-function Courses() {
-    let courses = [];
 
-    this.addCourse = (name, prof, links, todos) => {
-        const newCourse = new Course(name, prof, links, todos);
-        courses.push(newCourse);
-        saveData(JSON.stringify(courses));
+
+// Courses is a module that provides operations on an array of "Course"
+const courses = (() =>  {
+    // Array of "Course"
+    let coursesArray = [];
+
+    // Add a course to array with only name
+    const addCourse = (name) => {
+        const newCourse = Course(name);
+        coursesArray.push(newCourse);
     }
 
-    this.removeCourse = (name) => {
-        courses = courses.filter((course) => (course.name !== name));
+    // Add a course to array with all information
+    const addCourseFull = (nameP, profP, linksP, todosP) => {
+        const newCourse = Course(nameP);
+        newCourse.courseProf = profP;
+        newCourse.courseLinks = linksP;
+        newCourse.courseToDos = todosP;
+        coursesArray.push(newCourse);
     }
 
-    this.getCourse = (name) => courses.find((course) => (course.name === name));
+    // Remove a course to array
+    const removeCourse = (name) => {
+        coursesArray = coursesArray.filter((course) => (course.courseName !== name));
+        return coursesArray;
+    }
 
-    this.isUniqueCourse = (name) => courses.find((course) => (course.name === name)) === undefined;
-}
+    // Single getter used to update course information (see "Course")
+    const getCourse = (name) => coursesArray.find((course) => (course.courseName === name));
 
-export default Courses;
+    // Gets all courses which will be useful for storage
+    const getAllCourses = () => coursesArray
+
+    // Check if course of name exists
+    const isUnique = (name) => coursesArray.find((course) => (course.courseName === name)) === undefined;
+
+    return {
+        addCourse, addCourseFull, removeCourse, getCourse, getAllCourses, isUnique, coursesArray
+    }
+})();
+
+export default courses;

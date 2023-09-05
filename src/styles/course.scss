@@ -59,3 +59,37 @@
 .course-input-prof {
     font-size: 1.3rem;
 }
+
+.course .link-header, .course .todos-header {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: white;
+    margin-top: 20px;
+}
+
+.course .link-header h3, .course .todos-header h3 {
+    font-size: 1.5rem;
+}
+
+.course .link-header button, .course .todos-header button {
+  display: block;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  text-align: center;
+  transition: transform ease-in-out 0.2s;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+.course .link-header button:hover, .course .todos-header button:hover {
+    transform: scale(1.1) perspective(0.5px);
+}
+
+
+.todos-container {
+    background-color: white;
+}
