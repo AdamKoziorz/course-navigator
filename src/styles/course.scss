@@ -7,7 +7,7 @@
 
 .course {
     padding: 30px;
-    border-radius: 30px;
+    border-radius: 40px;
     background-color: rgb(62, 62, 62);
     max-width: 1200px;
     min-width: 800px;
@@ -63,16 +63,22 @@
 .course .link-header, .course .todos-header {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+}
+
+.course .link-header-left, .course .todos-header-left {
+    display: flex;
+    flex-direction: row;
     gap: 10px;
     color: white;
     margin-top: 20px;
 }
 
-.course .link-header h3, .course .todos-header h3 {
+.course .link-header-left span, .course .todos-header-left span {
     font-size: 1.5rem;
 }
 
-.course .link-header button, .course .todos-header button {
+.small-button {
   display: block;
   height: 1.5rem;
   width: 1.5rem;
@@ -85,10 +91,82 @@
   border: 1px solid white;
 }
 
-.course .link-header button:hover, .course .todos-header button:hover {
+.small-button:hover {
     transform: scale(1.1) perspective(0.5px);
 }
 
+.course .link-header-right {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: white;
+    margin-top: 20px;
+}
+
+.course .link-header-right.hidden {
+    display: none
+}
+
+.course .link-header-right .link-input {
+    border-bottom: 1px solid white;
+}
+
+.course .link-header-right .link-input.name {
+    width: 150px;
+}
+
+.course .link-header-right .link-input.link {
+    width: 300px;
+}
+
+
+.link-container {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.link-bubble {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    border-radius: 20px;
+    font-size: 1rem;
+    align-items: center;
+}
+
+.link-bubble:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.link-bubble a {
+    text-decoration: none;
+    color: black;
+    padding-left: 5px;
+}
+
+.link-bubble button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.1rem;
+    color: rgb(147, 147, 147);
+}
+
+.link-bubble button:hover {
+    color: black;
+}
+
+
+
+
+
+.todos {
+    margin-top: 30px;
+}
 
 .todos-container {
     background-color: white;
