@@ -1,4 +1,4 @@
-.course-form {
+.courses {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,10 +8,8 @@
 .course {
     padding: 30px;
     border-radius: 40px;
-    background-color: rgb(62, 62, 62);
-    max-width: 1200px;
-    min-width: 800px;
-    
+    background-color: rgb(99, 31, 31);
+    width: min(800px, calc(100vh - 50px));
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -42,10 +40,13 @@
     border: none;
     outline: none;
     width: calc(100% - 80px);
+    inline-size: calc(100% - 80px);
+    overflow-wrap: break-word;
+    hyphens: manual;
 }
 
 .course input::placeholder {
-    color: rgb(201, 201, 201);
+    color: rgb(168, 168, 168);
 }
 
 .course input:focus {
@@ -54,6 +55,12 @@
 
 .course-input-name {
     font-size: 2rem;
+}
+
+.course-menu-btns {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
 
 .course-input-prof {
@@ -95,7 +102,14 @@
     transform: scale(1.1) perspective(0.5px);
 }
 
-.course .link-header-right {
+.link-header-right, .todo-header-right {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.link-header-right-top, .todo-header-right-top {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -103,11 +117,11 @@
     margin-top: 20px;
 }
 
-.course .link-header-right.hidden {
+.link-header-right.hidden, .link-header-right-bottom.hidden, .todo-header-right.hidden, .todo-header-right-bottom.hidden {
     display: none
 }
 
-.course .link-header-right .link-input {
+.course .link-header-right .link-input, .task-input.name {
     border-bottom: 1px solid white;
 }
 
@@ -115,10 +129,14 @@
     width: 150px;
 }
 
-.course .link-header-right .link-input.link {
+.course .link-header-right .link-input.link, .task-input.name {
     width: 300px;
 }
 
+.link-header-right-bottom, .todo-header-right-bottom {
+    color: white;
+    font-size: 0.8rem;
+}
 
 .link-container {
     margin-top: 15px;
@@ -160,14 +178,124 @@
     color: black;
 }
 
-
-
-
-
 .todos {
     margin-top: 30px;
 }
 
 .todos-container {
     background-color: white;
+    padding: 18px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 18px;
 }
+
+.todo-point {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+}
+
+.todo-point span {
+    padding-bottom: 3px;
+    border-bottom: 1px solid black;
+    width: 100%;
+}
+
+.todo-check-btn {
+  display: block;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  text-align: center;
+  color: white;
+  background-color: transparent;
+  border: 1px solid black;
+}
+
+.todo-check-btn.checked {
+    background-color: rgb(0, 0, 0);
+}
+
+
+@media (max-width: 800px) {
+    .courses {
+        width: calc(100vw - 40px);
+    }
+
+    .course {
+        width: auto;
+        gap: 5px;
+    }
+
+    .content-wrapper {
+        gap: 50px;
+    }
+
+    .course-input-name {
+        font-size: 1.5rem;
+    }
+
+    .course-input-prof {
+        font-size: 1rem;
+    }
+
+    .course .link-header-left span, .course .todos-header-left span {
+        font-size: 1.2rem;
+    }
+
+    .small-button {
+        height: 1.2rem;
+        width: 1.2rem;
+        font-size: 0.6rem;
+    }
+
+    .course .header button {
+        height: 2rem;
+        width: 2rem;
+    }
+
+    .link-bubble {
+        padding: 5px;
+    }
+
+    .link-bubble a {
+        font-size: 0.8rem;
+    }
+
+    .todo-point-text {
+        font-size: 0.8rem;
+    }
+
+    .todo-check-btn {
+        height: 0.8rem;
+        width: 0.8rem;
+    }
+
+    .todos-container {
+        padding: 5px;
+    }
+
+    .course .link-header, .course .todos-header {
+        flex-direction: column;
+    }
+
+    .link-header-right-top, .todo-header-right-top {
+        flex-direction: column;
+    }
+
+    .link-header-right-top .small-button, .todo-header-right-top, .small-button {
+        align-self: flex-end;
+    }
+
+    .course .link-header-right .link-input.name {
+        width: 100%;
+    }
+    
+    .course .link-header-right .link-input.link, .task-input.name {
+        width: 100%;
+    }
+ }

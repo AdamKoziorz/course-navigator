@@ -1,5 +1,7 @@
-function isAbsoluteURL(url) {
-    return url.indexOf('://') > 0 || url.indexOf('//') === 0;
+function isValidURL(url) {
+    const r = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/;
+
+    return r.test(url)
 }
 
-export default isAbsoluteURL;
+export default isValidURL;

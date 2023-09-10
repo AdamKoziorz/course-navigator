@@ -61,6 +61,26 @@ const courses = (() => {
     }
   };
 
+  const getToDoFromCourse = (courseName, toDo) => {
+    const course = getCourse(courseName);
+    return course.todos.find((todo) => todo.name === toDo);
+  }
+
+  const toggleToDoFromCourse = (courseName, toDo) => {
+    const course = getCourse(courseName);
+    course.todos.forEach((todoEntry) => {
+      if (todoEntry.name === toDo) {
+        // eslint-disable-next-line no-param-reassign
+        todoEntry.complete = !todoEntry.complete;
+      }
+    });
+  };
+
+  const filterToDoFromCourse = (courseName) => {
+    const course = getCourse(courseName);
+    course.todos = course.todos.filter((todo) => (todo.complete !== true));
+  }
+
   const getAllCourses = () => coursesArray;
 
   return {
@@ -73,6 +93,9 @@ const courses = (() => {
     getLinkFromCourse,
     removeLinkFromCourse,
     addToDoToCourse,
+    getToDoFromCourse,
+    toggleToDoFromCourse,
+    filterToDoFromCourse,
     getAllCourses,
   };
 })();

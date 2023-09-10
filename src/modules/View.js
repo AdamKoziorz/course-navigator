@@ -1,12 +1,12 @@
 /* eslint-disable no-use-before-define */
 import courses from './Course';
 import storage from './Storage';
-import isAbsoluteURL from './Utilities';
+import isValidURL from './Utilities';
 
 import DeleteIcon from '../assets/trash-can-outline.svg';
 
 const addBtn = document.querySelector('.add-btn');
-const courseList = document.querySelector('.course-form');
+const courseList = document.querySelector('.courses');
 
 
 
@@ -31,15 +31,14 @@ function initCourse() {
     courseList.appendChild(courseBubble);
 
     function processName(name) {
-        // if (courses.isUnique(name) && name !== "") {
+        if (courses.getCourse(name) === undefined && name !== "") {
             courses.addCourse(name);
             storage.saveData(courses.getAllCourses());
             courseList.removeChild(courseBubbleHeader.parentElement);
-            // eslint-disable-next-line no-use-before-define
             generateCourseBubble(courses.getCourse(name));
-        // } else {
-        //     courseList.removeChild(courseBubble);
-        // }
+        } else {
+             courseList.removeChild(courseBubble);
+        }
     }
 
     courseBubbleHeaderName.addEventListener("keypress", (e) => {
@@ -72,12 +71,18 @@ function generateHeader(course) {
     courseBubbleHeaderName.value = course.name;
     courseBubbleHeaderName.type = "text";
     courseBubbleHeaderName.placeholder = "Course Name";
+    courseBubbleHeaderName.prevvalue = course.name;
     courseBubbleHeaderName.classList.add("course-input-name");
     courseBubbleHeader.appendChild(courseBubbleHeaderName);
 
     courseBubbleHeaderName.addEventListener("change", () => {
-        courses.setCourseName(course.name, courseBubbleHeaderName.value);
-        storage.saveData(courses.getAllCourses());
+        if (courses.getCourse(courseBubbleHeaderName.value) === undefined && courseBubbleHeaderName.value !== "") {
+            courses.setCourseName(course.name, courseBubbleHeaderName.value);
+            storage.saveData(courses.getAllCourses());
+            courseBubbleHeaderName.prevvalue = courseBubbleHeaderName.value;
+        } else {
+            courseBubbleHeaderName.value = courseBubbleHeaderName.prevvalue;
+        }
         document.activeElement.blur();
     });
 
@@ -85,18 +90,23 @@ function generateHeader(course) {
         if (e.code === "Enter") { document.activeElement.blur(); }
     });
 
-    const courseBubbleHeaderMenu = document.createElement('button');
-    courseBubbleHeaderMenu.type = "button";
-    courseBubbleHeaderMenu.classList.add("delete");
-    courseBubbleHeaderMenu.style.background = `url(${DeleteIcon})`
+    const courseBubbleHeaderMenu = document.createElement('div');
+    courseBubbleHeaderMenu.classList.add("course-menu-btns");
 
-    courseBubbleHeaderMenu.addEventListener("click", () => {
+    const courseBubbleHeaderMenuDelete = document.createElement('button');
+    courseBubbleHeaderMenuDelete.type = "button";
+    courseBubbleHeaderMenuDelete.classList.add("delete");
+    courseBubbleHeaderMenuDelete.style.background = `url(${DeleteIcon})`
+
+    courseBubbleHeaderMenuDelete.addEventListener("click", () => {
         courses.removeCourse(course.name);
         storage.saveData(courses.getAllCourses());
         courseList.removeChild(courseBubbleHeader.parentElement);
     })
 
+    courseBubbleHeaderMenu.appendChild(courseBubbleHeaderMenuDelete);
     courseBubbleHeader.appendChild(courseBubbleHeaderMenu);
+
 
     return courseBubbleHeader;
 }
@@ -131,6 +141,7 @@ function generateLinks(course) {
     const courseBubbleLinksHeader = document.createElement('div');
     courseBubbleLinksHeader.classList.add("link-header");
 
+
     // Link Title and Add Button
     const courseBubbleLinksHeaderLeft = document.createElement('div');
     courseBubbleLinksHeaderLeft.classList.add("link-header-left");
@@ -143,7 +154,6 @@ function generateLinks(course) {
     courseBubbleLinksHeaderButton.type = "button";
     courseBubbleLinksHeaderButton.innerText = "+";
 
-
     courseBubbleLinksHeaderLeft.appendChild(courseBubbleLinksHeaderText);
     courseBubbleLinksHeaderLeft.appendChild(courseBubbleLinksHeaderButton);
 
@@ -151,6 +161,9 @@ function generateLinks(course) {
     // Link Input
     const courseBubbleLinksHeaderRight = document.createElement('div');
     courseBubbleLinksHeaderRight.classList.add("link-header-right", "hidden");
+    const courseBubbleLinksHeaderRightTop = document.createElement('div');
+    courseBubbleLinksHeaderRightTop.classList.add("link-header-right-top", "hidden");
+
     const courseBubbleLinksNameInput = document.createElement('input');
     courseBubbleLinksNameInput.classList.add("link-input", "name");
     courseBubbleLinksNameInput.type = "text";
@@ -165,30 +178,39 @@ function generateLinks(course) {
     courseBubbleLinksAddInput.type = "button";
     courseBubbleLinksAddInput.innerText = ">";
 
+    const courseBubbleLinksHeaderRightBottom = document.createElement('span');
+    courseBubbleLinksHeaderRightBottom.classList.add("link-header-right-bottom", "hidden");
+    courseBubbleLinksHeaderRightBottom.innerText = "Please input a name (50 characters or less) and a valid URL";
 
     function generateURL() {
         const linkName = courseBubbleLinksNameInput.value;
         const linkURL = courseBubbleLinksURLInput.value;
 
-        if (isAbsoluteURL(linkURL)) {
+        if (isValidURL(linkURL) && linkName !== "" && linkName.length <= 50) {
             courses.addLinkToCourse(course.name, linkName, linkURL);
             generateLinkBubble(courses.getLinkFromCourse(course.name, linkName));
             storage.saveData(courses.getAllCourses());
             document.activeElement.blur();
             courseBubbleLinksHeaderRight.classList.add("hidden");
+            courseBubbleLinksHeaderRightBottom.classList.add("hidden");
+            courseBubbleLinksNameInput.value = "";
+            courseBubbleLinksURLInput.value = "";
+        } else {
+            courseBubbleLinksHeaderRightBottom.classList.remove("hidden");
         }
     }
 
+
+    // Event Listeners
     courseBubbleLinksAddInput.addEventListener("click", generateURL);
 
     courseBubbleLinksURLInput.addEventListener("keypress", (e) => {
-        if ((e.code === "Enter") && (courseBubbleLinksNameInput.value !== "")) { generateURL() }
+        if (e.code === "Enter") { generateURL() }
     });
 
-
-    courseBubbleLinksHeaderRight.appendChild(courseBubbleLinksNameInput);
-    courseBubbleLinksHeaderRight.appendChild(courseBubbleLinksURLInput);
-    courseBubbleLinksHeaderRight.appendChild(courseBubbleLinksAddInput);
+    courseBubbleLinksNameInput.addEventListener("keypress", (e) => {
+        if (e.code === "Enter") { generateURL() }
+    });
 
     courseBubbleLinksHeaderButton.addEventListener("click", () => {
         courseBubbleLinksHeaderRight.classList.remove("hidden");
@@ -196,8 +218,14 @@ function generateLinks(course) {
     });
 
 
+    // Piece together
+    courseBubbleLinksHeaderRightTop.appendChild(courseBubbleLinksNameInput);
+    courseBubbleLinksHeaderRightTop.appendChild(courseBubbleLinksURLInput);
+    courseBubbleLinksHeaderRightTop.appendChild(courseBubbleLinksAddInput);
+    courseBubbleLinksHeaderRight.appendChild(courseBubbleLinksHeaderRightTop);
+    courseBubbleLinksHeaderRight.appendChild(courseBubbleLinksHeaderRightBottom);
 
-    
+
     // Link Container
     const courseBubbleLinksContainer = document.createElement('div');
     courseBubbleLinksContainer.classList.add("link-container");
@@ -242,52 +270,157 @@ function generateLinks(course) {
 }
 
 
+
+
+
+
+
 function generateToDos(course) {
     const courseBubbleToDos = document.createElement('div');
     courseBubbleToDos.classList.add("todos");
 
     const courseBubbleToDosHeader = document.createElement('div');
-    courseBubbleToDosHeader.classList.add("todos-header-left");
+    courseBubbleToDosHeader.classList.add("todos-header");
+
+
+    // Link Title and Add Button
+    const courseBubbleToDosHeaderLeft = document.createElement('div');
+    courseBubbleToDosHeaderLeft.classList.add("todos-header-left");
 
     const courseBubbleToDosHeaderText = document.createElement('span');
-    courseBubbleToDosHeaderText.innerText = "To-Do List";
+    courseBubbleToDosHeaderText.innerText = "To Do List";
 
     const courseBubbleToDosHeaderButton = document.createElement('button');
     courseBubbleToDosHeaderButton.classList.add("small-button");
     courseBubbleToDosHeaderButton.type = "button";
     courseBubbleToDosHeaderButton.innerText = "+";
 
-    courseBubbleToDosHeader.appendChild(courseBubbleToDosHeaderText);
-    courseBubbleToDosHeader.appendChild(courseBubbleToDosHeaderButton);
+    courseBubbleToDosHeaderLeft.appendChild(courseBubbleToDosHeaderText);
+    courseBubbleToDosHeaderLeft.appendChild(courseBubbleToDosHeaderButton);
 
+
+    // To Do Input
+    const courseBubbleToDosHeaderRight = document.createElement('div');
+    courseBubbleToDosHeaderRight.classList.add("todo-header-right", "hidden");
+    const courseBubbleToDosHeaderRightTop = document.createElement('div');
+    courseBubbleToDosHeaderRightTop.classList.add("todo-header-right-top", "hidden");
+
+    const courseBubbleToDosTaskInput = document.createElement('input');
+    courseBubbleToDosTaskInput.classList.add("task-input", "name");
+    courseBubbleToDosTaskInput.type = "text";
+    courseBubbleToDosTaskInput.placeholder = "Task";
+
+    const courseBubbleToDosAddInput = document.createElement('button');
+    courseBubbleToDosAddInput.classList.add("small-button");
+    courseBubbleToDosAddInput.type = "button";
+    courseBubbleToDosAddInput.innerText = ">";
+
+    const courseBubbleToDosHeaderRightBottom = document.createElement('span');
+    courseBubbleToDosHeaderRightBottom.classList.add("todo-header-right-bottom", "hidden");
+    courseBubbleToDosHeaderRightBottom.innerText = "Please input a non-empty task";
+
+
+    function generateTask() {
+        const task = courseBubbleToDosTaskInput.value;
+
+        if (task !== "") {
+            courses.addToDoToCourse(course.name, task, false);
+            generateToDoPoint(courses.getToDoFromCourse(course.name, task));
+            adjustEmptyContainer();
+            storage.saveData(courses.getAllCourses());
+            document.activeElement.blur();
+            courseBubbleToDosHeaderRight.classList.add("hidden");
+            courseBubbleToDosHeaderRightBottom.classList.add("hidden");
+            courseBubbleToDosTaskInput.value = "";
+        } else {
+            courseBubbleToDosHeaderRightBottom.classList.remove("hidden");
+        }
+    }
+
+
+    // Event Listeners
+    courseBubbleToDosAddInput.addEventListener("click", generateTask);
+
+    courseBubbleToDosTaskInput.addEventListener("keypress", (e) => {
+        if (e.code === "Enter") { generateTask() }
+    });
+
+    courseBubbleToDosHeaderButton.addEventListener("click", () => {
+        courseBubbleToDosHeaderRight.classList.remove("hidden");
+        courseBubbleToDosTaskInput.focus();
+    });
+
+
+    // Piece together Header
+    courseBubbleToDosHeaderRightTop.appendChild(courseBubbleToDosTaskInput);
+    courseBubbleToDosHeaderRightTop.appendChild(courseBubbleToDosAddInput);
+    courseBubbleToDosHeaderRight.appendChild(courseBubbleToDosHeaderRightTop);
+    courseBubbleToDosHeaderRight.appendChild(courseBubbleToDosHeaderRightBottom);
+
+
+
+
+    // ToDos Container
     const courseBubbleToDosContainer = document.createElement('div');
     courseBubbleToDosContainer.classList.add("todos-container");
+    adjustEmptyContainer();
+    course.todos.forEach((todo) => {
+        generateToDoPoint(todo);
+    });
 
+    function adjustEmptyContainer() {
+        if (course.todos.length !== 0) {
+            courseBubbleToDosContainer.style.padding = "18px";
+        } else {
+            courseBubbleToDosContainer.style.padding = "0px";
+        }
+    }
+
+    function generateToDoPoint(todo) {
+        const ToDoPoint = document.createElement('div');
+        ToDoPoint.classList.add("todo-point");
+
+        const ToDoPointCheck = document.createElement('button');
+        ToDoPointCheck.classList.add("todo-check-btn");
+        ToDoPointCheck.type = "button";
+
+        const ToDoPointText = document.createElement('span');
+        ToDoPointText.classList.add("todo-point-text");
+        ToDoPointText.innerText = todo.name;
+
+        ToDoPointCheck.addEventListener("click", () => {
+            courses.toggleToDoFromCourse(course.name, todo.name);
+            storage.saveData(courses.getAllCourses());
+            const {complete} = courses.getToDoFromCourse(course.name, todo.name);
+            if (complete === true) {
+                ToDoPointText.style.textDecoration = "line-through";
+                ToDoPointCheck.classList.add("checked");
+            } else {
+                ToDoPointText.style.textDecoration = "none";
+                ToDoPointCheck.classList.remove("checked");
+            }
+        })
+
+        ToDoPoint.appendChild(ToDoPointCheck);
+        ToDoPoint.appendChild(ToDoPointText);
+        courseBubbleToDosContainer.appendChild(ToDoPoint);
+    }
+
+
+    // Piece things together
+    courseBubbleToDosHeader.appendChild(courseBubbleToDosHeaderLeft);
+    courseBubbleToDosHeader.appendChild(courseBubbleToDosHeaderRight);
     courseBubbleToDos.appendChild(courseBubbleToDosHeader);
     courseBubbleToDos.appendChild(courseBubbleToDosContainer);
-
-    /*
-    if (toDosArray.length !== 0) {
-        toDosArray.forEach((todo) => {
-            courseBubbleToDosContainer.appendChild(generateToDo(todo));
-        });
-    }
-    */
 
     return courseBubbleToDos;
 }
 
 
-    
 
-
-
-
-
-
-
-
-
+// *************************
+// Loading Data into Bubbles
+// *************************
 
 function generateCourseBubble(course) {
     // Course Container
@@ -310,11 +443,17 @@ function generateCourseBubble(course) {
     courseList.appendChild(courseBubble);
 }
 
+function filterToDos(courseName) {
+    courses.filterToDoFromCourse(courseName);
+    storage.saveData(courses.getAllCourses());
+}
+
 function loadCourses() {
     const data = storage.getData();
     if (data !== null) {
         data.forEach((course) => {
             courses.addCourse(course.name, course.prof, course.links, course.todos);
+            filterToDos(course.name);
             generateCourseBubble(courses.getCourse(course.name));
         });
     }

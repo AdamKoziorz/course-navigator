@@ -1,5 +1,5 @@
 :root {
-    --main-bg-color: rgb(232, 232, 232);
+    --main-bg-color: rgb(126, 48, 48);
     --add-btn-color: rgb(160, 160, 160);
 }
 
@@ -16,12 +16,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 80px;
 }
 
 h1 {
     font-size: 4rem;
     font-weight: bold;
+    color: white;
 }
 
 .add-course-button {
@@ -47,3 +49,23 @@ h1 {
     font-size: 3rem;
     transform: scale(1.1) perspective(0.5px);
 }
+
+@media (max-width: 800px) {
+    body {
+        padding: 40px 20px 40px 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .add-course-button button {
+        height: 3.5rem;
+        width: 3.5rem;
+        font-size: 2rem;
+      }
+
+    .content-wrapper {
+        width: calc(100vh - 50px);
+    }
+ }
